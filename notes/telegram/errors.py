@@ -1,0 +1,2 @@
+class WhitelistDenyError(Exception):
+    pass

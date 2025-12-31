@@ -1,0 +1,70 @@
+[project]
+name = "notes_bot"
+version = "0.1.0"
+description = "Move notes from TG to Notion DB"
+requires-python = ">=3.13"
+readme = "README.md"
+authors = [
+    { name = "Artamonov Arkadii", email = "artamarkan@gmail.com" },
+]
+packages = [
+    { include = "notes" },
+]
+dependencies = [
+    "aiogram>=3.23.0",
+    "cachetools>=6.2.4",
+    "httpx>=0.28.1",
+    "pydantic>=2.12.5",
+    "python-dotenv>=1.2.1",
+]
+
+
+[dependency-groups]
+dev = [
+    "black>=25.9.0",
+    "freezegun>=1.5.5",
+    "isort>=7.0.0",
+    "pytest>=8.4.2",
+    "pytest-mock>=3.15.1",
+    "ruff>=0.14.0",
+    "ty>=0.0.8",
+]
+
+
+[tool.black]
+target-version = ["py313"]
+extend-exclude = 'env|.env|venv|.venv'
+
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+skip_glob = [
+    "docker/.*",
+]
+
+
+[tool.ruff]
+lint.select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "I001", # isort
+    "N",  #  pep8-naming
+    "W292",  # no newline at end of file
+]
+lint.ignore = [
+    "E501",  # line too long, handled by black
+    "B008",  # do not perform function calls in argument defaults
+    "C408",  # unnecessary `dict` call
+    "C901",  # too complex
+    "N802",  # function name should be lowercase
+    "E731",  # do not assign a lambda expression, use a def
+]
+lint.unfixable = ["E731", "F401"]
+fix = true
+extend-exclude = [
+    "docker/*",
+]
