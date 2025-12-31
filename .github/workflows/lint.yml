@@ -1,0 +1,42 @@
+name: Lint & Typecheck
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: uv sync --frozen --dev
+
+      - name: Black
+        run: uv run python -m black --check --diff notes
+
+      - name: Ruff
+        run: uv run python -m ruff check notes
+
+      - name: Isort
+        run: uv run python -m isort --check --diff notes
+
+      - name: Ty
+        run: uv run python -m ty check notes
