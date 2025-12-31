@@ -7,9 +7,6 @@ readme = "README.md"
 authors = [
     { name = "Artamonov Arkadii", email = "artamarkan@gmail.com" },
 ]
-packages = [
-    { include = "notes" },
-]
 dependencies = [
     "aiogram>=3.23.0",
     "cachetools>=6.2.4",
@@ -63,7 +60,7 @@ lint.ignore = [
     "N802",  # function name should be lowercase
     "E731",  # do not assign a lambda expression, use a def
 ]
-lint.unfixable = ["E731", "F401"]
+lint.unfixable = ["E731"]
 fix = true
 extend-exclude = [
     "docker/*",
