@@ -9,6 +9,8 @@ LOG_FILE = Path(__file__).resolve().parent.parent / "notes.log"
 
 load_dotenv(override=True)
 
+DEV = os.environ.get("DEV", False)
+
 NOTION_VERSION = "2025-09-03"
 NOTION_BASE_URL = "https://api.notion.com/v1"
 NOTION_CLIENT_TIMEOUT = 10.0  # sec
@@ -16,11 +18,13 @@ NOTION_SECRET = os.getenv("NOTION_SECRET")
 NOTION_DB_ID = os.getenv("NOTION_DB_ID")
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_BOT_OWNER_ID = os.getenv("TELEGRAM_BOT_OWNER_ID")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 TELEGRAM_ALLOWED_USER_IDS_RAW = os.getenv("TELEGRAM_ALLOWED_USER_IDS", "")
 TELEGRAM_ALLOWED_USER_IDS = TELEGRAM_ALLOWED_USER_IDS_RAW.split()
 
+WEBHOOK_SECRET = os.getenv("TELEGRAM_WEBHOOK_SECRET")
+WEBHOOK_PUBLIC_URL = os.getenv("WEBHOOK_PUBLIC_URL")
+WEBHOOK_PORT = int(os.environ.get("PORT", "8080"))
+WEBHOOK_PATH = "webhook/"
 
 WORKERS_COUNT = 1
 QUEUE_MAXSIZE = 50
@@ -36,6 +40,11 @@ def _validate_settings() -> None:
         missing.append("NOTION_DB_ID")
     if not TELEGRAM_BOT_TOKEN:
         missing.append("TELEGRAM_BOT_TOKEN")
+
+    if not DEV and not WEBHOOK_SECRET:
+        missing.append("WEBHOOK_SECRET")
+    if not DEV and not WEBHOOK_PUBLIC_URL:
+        missing.append("WEBHOOK_PUBLIC_URL")
 
     if missing:
         raise ValueError(
