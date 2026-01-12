@@ -27,12 +27,14 @@ CreateNoteQueue: TypeAlias = asyncio.Queue[CreateNoteJob]
 async def start_workers(
     notion: NotionWrapper,
 ) -> tuple[CreateNoteQueue, list[asyncio.Task]]:
+    global_logger.info("Starting workers")
     queue: CreateNoteQueue = asyncio.Queue(maxsize=QUEUE_MAXSIZE)
 
     workers = [
         asyncio.create_task(notion_worker(worker_id=i, queue=queue, notion=notion))
         for i in range(WORKERS_COUNT)
     ]
+    global_logger.info("Workers started")
 
     dp["notion"] = notion
     dp["queue"] = queue
@@ -41,7 +43,9 @@ async def start_workers(
 
 
 async def stop_workers(
-    notion: NotionWrapper, queue: CreateNoteQueue, workers: list[asyncio.Task]
+    notion: NotionWrapper,
+    queue: CreateNoteQueue,
+    workers: list[asyncio.Task],
 ) -> None:
     global_logger.info("Stopping bot...")
     with suppress(asyncio.TimeoutError):
@@ -56,8 +60,8 @@ async def stop_workers(
     global_logger.info("Exiting app...")
 
 
-async def run_polling(notion) -> None:
-    queue, workers = await start_workers(notion)
+async def run_polling(notion: NotionWrapper) -> None:
+    queue, workers = await start_workers(notion=notion)
 
     global_logger.info("Starting bot in polling mode...")
     await bot.delete_webhook(drop_pending_updates=True)
@@ -68,8 +72,8 @@ async def run_polling(notion) -> None:
         await stop_workers(notion, queue, workers)
 
 
-async def run_webhook(notion) -> None:
-    queue, workers = await start_workers(notion)
+async def run_webhook(notion: NotionWrapper) -> None:
+    queue, workers = await start_workers(notion=notion)
 
     if not WEBHOOK_PUBLIC_URL:
         raise Exception("WEBHOOK_PUBLIC_URL must be set")
@@ -100,9 +104,17 @@ async def run_webhook(notion) -> None:
 
     setup_application(app, dp, bot=bot)
 
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", port=WEBHOOK_PORT)
+    await site.start()
+
     try:
-        web.run_app(app, host="0.0.0.0", port=WEBHOOK_PORT)
+        await asyncio.Event().wait()
     finally:
+        global_logger.info("Shutting down webhook server...")
+        await runner.cleanup()
+
         await stop_workers(notion, queue, workers)
 
 
