@@ -113,7 +113,7 @@ async def main() -> None:
     notion = await setup_notion_connection(token=NOTION_SECRET)  # type: ignore[invalid-argument-type]
     global_logger.info("Notion connection setup complete")
 
-    if not DEV:
+    if DEV:
         await run_polling(notion)
     else:
         await run_webhook(notion)
