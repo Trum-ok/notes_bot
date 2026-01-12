@@ -96,7 +96,7 @@ async def run_webhook(notion) -> None:
         dispatcher=dp,
         bot=bot,
         secret_token=WEBHOOK_SECRET,
-    ).register(app, path=WEBHOOK_PATH)
+    ).register(app, path=f"/{WEBHOOK_PATH}")
 
     setup_application(app, dp, bot=bot)
 
