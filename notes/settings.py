@@ -9,7 +9,7 @@ LOG_FILE = Path(__file__).resolve().parent.parent / "notes.log"
 
 load_dotenv(override=True)
 
-DEV = bool(os.environ.get("DEV", "True"))
+DEV = bool(os.environ.get("DEV"))
 
 NOTION_VERSION = "2025-09-03"
 NOTION_BASE_URL = "https://api.notion.com/v1"
