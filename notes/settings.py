@@ -34,6 +34,7 @@ global_logger, logger_tg, logger_notion = setup_logging(LOG_FILE)
 
 def _validate_settings() -> None:
     missing = []
+
     if not NOTION_SECRET:
         missing.append("NOTION_SECRET")
     if not NOTION_DB_ID:
@@ -52,7 +53,7 @@ def _validate_settings() -> None:
         )
 
     if not TELEGRAM_ALLOWED_USER_IDS:
-        raise ValueError("TELEGRAM_ALLOWED_USER_IDS is empty.")
+        global_logger.warning("TELEGRAM_ALLOWED_USER_IDS is empty — whitelist disabled")
 
 
 _validate_settings()

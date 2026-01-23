@@ -6,6 +6,7 @@ from aiogram.types import TelegramObject, User
 
 from notes.settings import logger_tg
 from notes.telegram.errors import WhitelistDenyError
+from notes.utils import clear_log_context, set_log_context
 
 
 class ErrorMiddleware(BaseMiddleware):
@@ -36,7 +37,7 @@ class ErrorMiddleware(BaseMiddleware):
 
 
 class WhitelistMiddleware(BaseMiddleware):
-    def __init__(self, allowed_user_ids_set: set[str]) -> None:
+    def __init__(self, allowed_user_ids_set: set[str] | None) -> None:
         self.whitelist = allowed_user_ids_set
 
     async def __call__(
@@ -52,19 +53,25 @@ class WhitelistMiddleware(BaseMiddleware):
 
         user = cast(User, raw_user)
 
-        if user.id in self.whitelist:
+        if self.whitelist and user.id in self.whitelist:
             return await handler(event, data)
 
         raise WhitelistDenyError
 
 
-class InlineLoggingMiddleware(BaseMiddleware):
+class LogContextMiddleware(BaseMiddleware):
     async def __call__(
         self,
         handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
-        # TODO
-        res = await handler(event, data)
-        return res
+        raw_user = data.get("event_from_user")
+        user_id = raw_user.id if isinstance(raw_user, User) else None
+        update_id = getattr(event, "update_id", None)
+
+        set_log_context(user_id=user_id, update_id=update_id)
+        try:
+            return await handler(event, data)
+        finally:
+            clear_log_context()

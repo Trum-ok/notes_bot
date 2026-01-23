@@ -121,6 +121,8 @@ async def run_webhook(notion: NotionWrapper) -> None:
 async def main() -> None:
     global_logger.info(f"dev: {DEV}")
 
+    global_logger.info("Starting app")
+
     global_logger.info("Setting up notion connection...")
     notion = await setup_notion_connection(token=NOTION_SECRET)  # type: ignore[invalid-argument-type]
     global_logger.info("Notion connection setup complete")

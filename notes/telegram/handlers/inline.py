@@ -12,13 +12,13 @@ from cachetools import TTLCache
 
 from notes.jobs import CreateNoteJob
 from notes.settings import NOTION_DB_ID
-from notes.telegram.middlewares import InlineLoggingMiddleware
+from notes.telegram.middlewares import LogContextMiddleware
 from notes.telegram.utils import enqueue_job
 
 _INLINE_CACHE = TTLCache(maxsize=10_000, ttl=300)
 
 inline_router = Router(name=__name__)
-inline_router.inline_query.middleware(InlineLoggingMiddleware())
+inline_router.inline_query.middleware(LogContextMiddleware())
 
 
 @inline_router.inline_query()
