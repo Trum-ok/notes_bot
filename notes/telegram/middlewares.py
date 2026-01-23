@@ -37,8 +37,8 @@ class ErrorMiddleware(BaseMiddleware):
 
 
 class WhitelistMiddleware(BaseMiddleware):
-    def __init__(self, allowed_user_ids_set: set[str] | None) -> None:
-        self.whitelist = allowed_user_ids_set
+    def __init__(self, allowed_user_ids: set[int] | None) -> None:
+        self.whitelist = allowed_user_ids
 
     async def __call__(
         self,
@@ -53,7 +53,10 @@ class WhitelistMiddleware(BaseMiddleware):
 
         user = cast(User, raw_user)
 
-        if self.whitelist and user.id in self.whitelist:
+        if not self.whitelist:
+            return await handler(event, data)
+
+        if user.id in self.whitelist:
             return await handler(event, data)
 
         raise WhitelistDenyError
