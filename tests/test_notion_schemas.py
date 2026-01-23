@@ -1,4 +1,3 @@
-
 from notes.notion.enums import ParentTypeEnum
 from notes.notion.schemas import (
     BlockParent,

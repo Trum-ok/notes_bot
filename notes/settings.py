@@ -20,7 +20,9 @@ NOTION_DB_ID = os.getenv("NOTION_DB_ID")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_ALLOWED_USER_IDS_RAW = os.getenv("TELEGRAM_ALLOWED_USER_IDS", "")
 TELEGRAM_ALLOWED_USER_IDS: set[int] = {
-    int(uid) for uid in TELEGRAM_ALLOWED_USER_IDS_RAW.replace(",", " ").split() if uid.strip()
+    int(uid)
+    for uid in TELEGRAM_ALLOWED_USER_IDS_RAW.replace(",", " ").split()
+    if uid.strip()
 }
 
 WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET")
