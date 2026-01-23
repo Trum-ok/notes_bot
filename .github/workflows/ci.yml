@@ -44,6 +44,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      NOTION_SECRET: test-secret
+      NOTION_DB_ID: test-db-id
+      TELEGRAM_BOT_TOKEN: "123456:ABC"
+      WEBHOOK_SECRET: test-webhook-secret
+      WEBHOOK_PUBLIC_URL: https://example.com
+      DEV: "true"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
