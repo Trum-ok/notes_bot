@@ -1,8 +1,9 @@
 # Notes Bot
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
-![Aiogram](https://img.shields.io/badge/Aiogram-3.23-green)
+[![Aiogram](https://img.shields.io/badge/Aiogram-3.23-green)](https://github.com/aiogram/aiogram)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
+[![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty)
 
 Inline Telegram бот для сохранения заметок в Notion.
 
