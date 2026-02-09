@@ -1,7 +1,7 @@
 # Notes Bot
 
 ![Python](https://img.shields.io/badge/Python-3.13-blue)
-![Aiogram](https://img.shields.io/badge/Aiogram-3.23-green)
+![Aiogram](https://img.shields.io/badge/Aiogram-3.24-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 Inline Telegram бот для сохранения заметок в Notion.
@@ -75,6 +75,8 @@ PORT=8080
 Для локальной разработки с webhook можно использовать [cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/):
 
 ```bash
+brew install cloudflared
+
 cloudflared tunnel --url http://localhost:8080
 ```
 
