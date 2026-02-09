@@ -8,8 +8,8 @@ authors = [
     { name = "Artamonov Arkadii", email = "artamarkan@gmail.com" },
 ]
 dependencies = [
-    "aiogram>=3.23.0",
-    "cachetools>=6.2.4",
+    "aiogram>=3.24.0",
+    "cachetools>=7.0.0",
     "httpx>=0.28.1",
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
@@ -18,14 +18,14 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "black>=25.9.0",
+    "black>=26.1.0",
     "freezegun>=1.5.5",
     "isort>=7.0.0",
     "pytest>=8.4.2",
     "pytest-asyncio>=0.24.0",
     "pytest-mock>=3.15.1",
-    "ruff>=0.14.0",
-    "ty>=0.0.8",
+    "ruff>=0.15.0",
+    "ty>=0.0.15",
 ]
 
 
@@ -45,9 +45,6 @@ extend-exclude = 'env|.env|venv|.venv'
 [tool.isort]
 profile = "black"
 multi_line_output = 3
-skip_glob = [
-    "docker/.*",
-]
 
 
 [tool.ruff]
